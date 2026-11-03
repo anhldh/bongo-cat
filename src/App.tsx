@@ -30,6 +30,13 @@ export default function App() {
     if (p !== "type") setRunning(false);
   };
 
+  useEffect(() => {
+    document.title =
+      page === "keyboard"
+        ? "kiểm tra bàn phím · bongo type"
+        : "bongo type · đo tốc độ gõ phím";
+  }, [page]);
+
   const onRunningChange = useCallback((r: boolean) => setRunning(r), []);
 
   return (
