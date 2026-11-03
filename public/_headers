@@ -1,0 +1,10 @@
+# Cloudflare Pages: file trong /assets có hash trong tên -> cache vĩnh viễn
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/standard/*
+  Cache-Control: public, max-age=604800
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin

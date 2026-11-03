@@ -1,67 +1,80 @@
-import { useState } from "react";
-import { useBongo } from "./hooks/useBongo";
-import { useMouse } from "./hooks/useMouse";
-import { BongoCat } from "./components/BongoCat";
-import { useTuning } from "./useTuning";
+import { useCallback, useEffect, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import { Header, type Page } from "./components/layout/Header";
+import { Footer } from "./components/layout/Footer";
+import { TypingTest } from "./components/typing/TypingTest";
+import { KeyboardTester } from "./components/keyboard/KeyboardTester";
+import { CornerCat } from "./components/cat/CornerCat";
+import { useTheme } from "./lib/useTheme";
+import { usePersistent } from "./lib/usePersistent";
 
-const MONO = 'ui-monospace, "JetBrains Mono", "SFMono-Regular", monospace';
+const pageFromHash = (): Page =>
+  window.location.hash.startsWith("#/keyboard") ? "keyboard" : "type";
 
 export default function App() {
-  const [sound, setSound] = useState(true);
-  const { pressed, hand } = useBongo(sound);
-  const { tuning, freezeMouse } = useTuning();
-  const mouse = useMouse({ track: !freezeMouse, sound });
+  const { pref, cycle } = useTheme();
+  const [sound, setSound] = usePersistent("sound", true);
+  const [cat, setCat] = usePersistent("cat", true);
+  const [page, setPageState] = useState<Page>(pageFromHash);
+  const [running, setRunning] = useState(false);
+
+  useEffect(() => {
+    const onHash = () => setPageState(pageFromHash());
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
+
+  const setPage = (p: Page) => {
+    window.location.hash = p === "keyboard" ? "/keyboard" : "/";
+    setPageState(p);
+    if (p !== "type") setRunning(false);
+  };
+
+  useEffect(() => {
+    document.title =
+      page === "keyboard"
+        ? "kiểm tra bàn phím · bongo type"
+        : "bongo type · đo tốc độ gõ phím";
+  }, [page]);
+
+  const onRunningChange = useCallback((r: boolean) => setRunning(r), []);
 
   return (
-    <main
-      style={{
-        minHeight: "100dvh",
-        display: "grid",
-        placeContent: "center",
-        gap: 28,
-        background: "#16232b",
-        color: "#8fa3ad",
-        fontFamily: MONO,
-        userSelect: "none",
-        touchAction: "manipulation",
-        cursor: "pointer",
-      }}
-    >
-      <BongoCat
-        pressed={pressed}
-        hand={hand}
-        mouse={mouse}
-        tuning={tuning}
-        style={{ width: "min(90vw, 612px)" }}
+    <div className="flex min-h-dvh flex-col">
+      <Header
+        page={page}
+        onPage={setPage}
+        theme={pref}
+        onTheme={cycle}
+        sound={sound}
+        onSound={() => setSound((s) => !s)}
+        cat={cat}
+        onCat={() => setCat((c) => !c)}
+        dimmed={running}
       />
 
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: 24,
-          fontSize: 13,
-          letterSpacing: "0.04em",
-        }}
-      >
-        <span>gõ phím, rê chuột, bấm chuột</span>
-        <button
-          onClick={() => setSound((s) => !s)}
-          style={{
-            font: "inherit",
-            fontSize: 13,
-            color: sound ? "#e8a33d" : "#5c717c",
-            background: "none",
-            border: `1px solid ${sound ? "#e8a33d" : "#2c3d47"}`,
-            borderRadius: 999,
-            padding: "4px 12px",
-            cursor: "pointer",
-          }}
-        >
-          {sound ? "âm thanh: bật" : "âm thanh: tắt"}
-        </button>
-      </div>
-    </main>
+      <main className="mx-auto flex w-full max-w-6xl flex-1 items-center px-5 pb-10 sm:px-8 lg:pb-32">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={page}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+            className="w-full"
+          >
+            {page === "type" ? (
+              <TypingTest onRunningChange={onRunningChange} />
+            ) : (
+              <KeyboardTester />
+            )}
+          </motion.div>
+        </AnimatePresence>
+      </main>
+
+      <Footer dimmed={running || page !== "type"} />
+
+      <CornerCat visible={cat} sound={sound} onHide={() => setCat(false)} />
+    </div>
   );
 }

@@ -1,7 +1,7 @@
 import { useEffect, type CSSProperties } from "react";
-import { SPRITE_COUNT } from "../keymap";
-import type { MouseState } from "../hooks/useMouse";
-import { DEFAULT_TUNING, type Tuning } from "../tuning";
+import { SPRITE_COUNT } from "../../keymap";
+import type { MouseState } from "../../hooks/useMouse";
+import { DEFAULT_TUNING, type Tuning } from "../../tuning";
 
 const BASE = "/standard";
 

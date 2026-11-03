@@ -1,12 +1,65 @@
 <!doctype html>
-<html lang="en">
+<html lang="vi">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>bongo-cat</title>
+    <title>bongo type · đo tốc độ gõ phím</title>
+    <meta name="description" content="Đo tốc độ gõ, kiểm tra bàn phím. Có mèo gõ cùng." />
+    <link rel="canonical" href="%SITE_URL%/" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#f3efe7" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#17191c" media="(prefers-color-scheme: dark)" />
+
+    <!-- ảnh + chữ khi dán link lên Facebook, Discord, X... -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="bongo type" />
+    <meta property="og:locale" content="vi_VN" />
+    <meta property="og:url" content="%SITE_URL%/" />
+    <meta property="og:title" content="bongo type" />
+    <meta property="og:description" content="Gõ nhanh hơn, có mèo gõ cùng." />
+    <meta property="og:image" content="%SITE_URL%/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Chú mèo pixel đang gõ bàn phím, chữ bongotype" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="bongo type" />
+    <meta name="twitter:description" content="Gõ nhanh hơn, có mèo gõ cùng." />
+    <meta name="twitter:image" content="%SITE_URL%/og.png" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "bongo type",
+        "url": "%SITE_URL%/",
+        "description": "Đo tốc độ gõ, kiểm tra bàn phím.",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Any",
+        "inLanguage": "vi",
+        "offers": { "@type": "Offer", "price": "0" }
+      }
+    </script>
+
+    <script>
+      // Đặt theme trước khi vẽ để không bị nháy trắng khi đang ở dark mode.
+      (function () {
+        try {
+          var t = localStorage.getItem("theme");
+          if (t !== "light" && t !== "dark") {
+            t = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+          }
+          document.documentElement.dataset.theme = t;
+        } catch (e) {
+          document.documentElement.dataset.theme = "dark";
+        }
+      })();
+    </script>
   </head>
   <body>
+    <noscript>bongo type cần bật JavaScript để chạy.</noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
