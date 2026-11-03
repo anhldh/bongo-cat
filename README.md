@@ -27,12 +27,12 @@ pnpm dev
 Phím tắt: `tab` bài mới, `ctrl + backspace` xoá cả từ, backspace ở đầu từ để
 quay lại sửa từ trước (chỉ khi từ đó sai).
 
-## Deploy (Cloudflare Pages)
+## Deploy (Cloudflare Pages / Vercel)
 
 - Build command: `pnpm build`, output: `dist`.
-- Domain dùng cho canonical + ảnh chia sẻ lấy từ `VITE_SITE_URL` (mặc định
-  trong `.env`). Đổi domain thì sửa `.env` hoặc đặt biến cùng tên trong
-  Settings → Environment variables của Pages.
+- Domain cho canonical + ảnh chia sẻ: đặt `VITE_SITE_URL` (xem `.env.example`)
+  trong biến môi trường của Cloudflare Pages / Vercel. Không đặt thì tự lấy
+  domain nền tảng cấp (`CF_PAGES_URL`, `VERCEL_PROJECT_PRODUCTION_URL`).
 - Ảnh chia sẻ `public/og.png` và icon sinh bằng `node scripts/make-images.cjs`
   (cần Playwright). Chỉ chạy lại khi muốn đổi ảnh.
 
