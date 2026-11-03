@@ -14,6 +14,8 @@
  *   main    màu nhấn (caret, số liệu lớn)
  *   err     gõ sai
  *   err-x   gõ thừa
+ *   key     mặt phím (trang kiểm tra phím), key-edge là thành phím
+ *   ok      phím đã nhận
  */
 :root {
   --c-bg: #f3efe7;
@@ -24,6 +26,9 @@
   --c-main: #c47a0f;
   --c-err: #d23c50;
   --c-err-x: #9c3445;
+  --c-key: #fbf9f4;
+  --c-key-edge: #d3cbba;
+  --c-ok: #3f9a5c;
   color-scheme: light;
 }
 
@@ -36,6 +41,9 @@
   --c-main: #e8a33d;
   --c-err: #e2566b;
   --c-err-x: #8f3a48;
+  --c-key: #2a2e34;
+  --c-key-edge: #101215;
+  --c-ok: #6cc28a;
   color-scheme: dark;
 }
 
@@ -48,6 +56,9 @@
   --color-main: var(--c-main);
   --color-err: var(--c-err);
   --color-err-x: var(--c-err-x);
+  --color-key: var(--c-key);
+  --color-key-edge: var(--c-key-edge);
+  --color-ok: var(--c-ok);
 
   --font-sans: "Lexend Variable", system-ui, sans-serif;
   --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
