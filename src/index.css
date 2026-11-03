@@ -1,111 +1,105 @@
+@import "tailwindcss";
+@import "@fontsource-variable/jetbrains-mono";
+@import "@fontsource-variable/lexend";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/*
+ * Màu đặt tên theo vai trò, không theo sắc độ:
+ *   bg      nền trang
+ *   panel   nền khối nổi (nút, thẻ, tooltip)
+ *   line    viền, lưới biểu đồ
+ *   sub     chữ phụ, chữ chưa gõ
+ *   text    chữ chính, chữ gõ đúng
+ *   main    màu nhấn (caret, số liệu lớn)
+ *   err     gõ sai
+ *   err-x   gõ thừa
+ */
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  --c-bg: #f3efe7;
+  --c-panel: #e8e3d8;
+  --c-line: #dcd5c7;
+  --c-sub: #a39c8d;
+  --c-text: #2c2a26;
+  --c-main: #c47a0f;
+  --c-err: #d23c50;
+  --c-err-x: #9c3445;
+  color-scheme: light;
+}
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+[data-theme="dark"] {
+  --c-bg: #17191c;
+  --c-panel: #202328;
+  --c-line: #2b2f35;
+  --c-sub: #5d646d;
+  --c-text: #d9dbde;
+  --c-main: #e8a33d;
+  --c-err: #e2566b;
+  --c-err-x: #8f3a48;
+  color-scheme: dark;
+}
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@theme inline {
+  --color-bg: var(--c-bg);
+  --color-panel: var(--c-panel);
+  --color-line: var(--c-line);
+  --color-sub: var(--c-sub);
+  --color-text: var(--c-text);
+  --color-main: var(--c-main);
+  --color-err: var(--c-err);
+  --color-err-x: var(--c-err-x);
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
+  --font-sans: "Lexend Variable", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
+}
+
+@layer base {
+  html,
+  body {
+    background: var(--c-bg);
+    color: var(--c-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* đổi theme mượt, nhưng không làm chậm màu chữ lúc gõ */
+    transition: background-color 250ms ease;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--c-main) 35%, transparent);
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--c-main);
+    outline-offset: 2px;
+    border-radius: 6px;
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+@keyframes caret-blink {
+  0%,
+  40% {
+    opacity: 1;
   }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
+  50%,
+  90% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }
 
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-}
-
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
-}
-
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
+@layer components {
+  .caret-blink {
+    animation: caret-blink 1s ease-in-out infinite;
   }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
+
+  .kbd {
+    @apply rounded-md bg-panel px-1.5 py-0.5 font-mono text-[0.7rem] text-text;
   }
-}
-p {
-  margin: 0;
-}
-
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
-}
-
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
 }
