@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { Header, type Page } from "./components/layout/Header";
 import { Footer } from "./components/layout/Footer";
 import { TypingTest } from "./components/typing/TypingTest";
-import { KeyboardTesterSoon } from "./components/KeyboardTesterSoon";
+import { KeyboardTester } from "./components/keyboard/KeyboardTester";
 import { CornerCat } from "./components/cat/CornerCat";
 import { useTheme } from "./lib/useTheme";
 import { usePersistent } from "./lib/usePersistent";
@@ -59,7 +59,7 @@ export default function App() {
             {page === "type" ? (
               <TypingTest onRunningChange={onRunningChange} />
             ) : (
-              <KeyboardTesterSoon />
+              <KeyboardTester />
             )}
           </motion.div>
         </AnimatePresence>

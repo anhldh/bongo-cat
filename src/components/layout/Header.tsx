@@ -37,12 +37,7 @@ const THEME_LABEL: Record<ThemePref, string> = {
 
 const NAV: { id: Page; label: string; icon: ReactNode; soon?: boolean }[] = [
   { id: "type", label: "gõ phím", icon: <Keyboard size={16} /> },
-  {
-    id: "keyboard",
-    label: "kiểm tra phím",
-    icon: <ScanSearch size={16} />,
-    soon: true,
-  },
+  { id: "keyboard", label: "kiểm tra phím", icon: <ScanSearch size={16} /> },
 ];
 
 function IconButton({

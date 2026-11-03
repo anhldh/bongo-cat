@@ -1,7 +1,6 @@
 import clsx from "clsx";
-import { motion } from "motion/react";
 import { AtSign, Clock, Hash, Languages, Type } from "lucide-react";
-import type { ReactNode } from "react";
+import { Bar, Opt, Sep } from "../ui/Segmented";
 import {
   TIME_OPTIONS,
   WORD_OPTIONS,
@@ -16,52 +15,15 @@ type Props = {
   dimmed: boolean;
 };
 
-function Opt({
-  active,
-  onClick,
-  children,
-  layoutGroup,
-}: {
-  active: boolean;
-  onClick: () => void;
-  children: ReactNode;
-  /** nhóm nút loại trừ nhau -> nền chạy theo nút đang chọn */
-  layoutGroup?: string;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      // không cho nút giữ focus, kẻo space/enter lại bấm nút thay vì gõ
-      onMouseDown={(e) => e.preventDefault()}
-      className={clsx(
-        "relative flex items-center gap-1.5 rounded-md px-2.5 py-1 transition-colors duration-150",
-        active ? "text-main" : "text-sub hover:text-text",
-      )}
-    >
-      {active && layoutGroup && (
-        <motion.span
-          layoutId={layoutGroup}
-          className="absolute inset-0 rounded-md bg-main/10"
-          transition={{ type: "spring", stiffness: 500, damping: 38 }}
-        />
-      )}
-      <span className="relative flex items-center gap-1.5">{children}</span>
-    </button>
-  );
-}
-
-const Sep = () => <span className="mx-1 h-4 w-[2px] rounded bg-line" />;
-
 export function ConfigBar({ config, onChange, dimmed }: Props) {
   const set = (patch: Partial<Config>) => onChange({ ...config, ...patch });
   const amounts = config.mode === "time" ? TIME_OPTIONS : WORD_OPTIONS;
   const amount = config.mode === "time" ? config.time : config.words;
 
   return (
-    <div
+    <Bar
       className={clsx(
-        "mx-auto flex w-fit max-w-full flex-wrap items-center justify-center gap-y-1 rounded-xl bg-panel px-2 py-1.5 text-[0.8rem] transition-opacity duration-300",
+        "transition-opacity duration-300",
         dimmed && "pointer-events-none opacity-0",
       )}
     >
@@ -117,6 +79,6 @@ export function ConfigBar({ config, onChange, dimmed }: Props) {
           {l.label}
         </Opt>
       ))}
-    </div>
+    </Bar>
   );
 }
